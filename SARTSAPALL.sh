@@ -1,4 +1,8 @@
 #! /bin/bash
+#Script made by Gabriel Lami!
+#Save this as a .sh file and give chmod 775 permission!
+#You can use this script to automate starting and stopping SAP instances by adding the "Start" part into CRONTAB to automate starting process in reboot and "STOP" part into rcd6.d to automate the stop processes before shutdown.
+#S4 SID=S4H, HANA DB SID=HDB. Change accordingly to your SID instances.
 
 ###########COLORS#########
 RED='\033[0;31m' # Red
@@ -41,7 +45,7 @@ do
       sleep 1;
       if [ "$count" = 4 ];
       then
-          echo -e "\n\n${BBOLD}S/4 APP${NC}SUCCESSFULLY ${BGREEN}STARTED${NC}...\n";
+          echo -e "\n\n${BBOLD}S/4 APP ${NC}SUCCESSFULLY ${BGREEN}STARTED${NC}...\n";
       break;
       fi
       done
@@ -61,7 +65,7 @@ do
 		  
 		  echo -e "\n\n${BBOLD}S/4 APP ${NC}SUCCESSFULLY ${BRED}STOPPED${NC}...\n";
      sleep 1
-		 echo -e "\n\n${YELLOW}STOPPING HANA DB ...\n";
+		 echo -e "\n\n${YELLOW}STOPPING ${BBOLD}HANA DB${NC}...\n";
 		 su - hdbadm -c "/usr/sap/hostctrl/exe/sapcontrol -nr 02 -function Stop";
 while :
 do
