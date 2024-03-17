@@ -18,8 +18,8 @@ BGREEN='\033[1;32m' #Bold Green
 ############CODE###########
 echo -e "\n\nScript made by: ${UBLACK}${BBOLD}Gabriel Lami${NC}!\nThank you for using!\n";
 sleep 3;
-echo -e "Input ${BBOLD}1 ${NC}to ${GREEN}Start ${BBOLD}HANA DB + S/4 APP${NC};";
-echo -e "Input ${BBOLD}2 ${NC}to ${RED}Stop ${BBOLD}HANA DB + S/4 APP${NC};";
+echo -e "Input ${BBOLD}1 ${NC}to ${GREEN}Start ${BBOLD}HANA DB + S/4 APP + AS JAVA${NC};";
+echo -e "Input ${BBOLD}2 ${NC}to ${RED}Stop ${BBOLD}HANA DB + S/4 APP + AS JAVA${NC};";
 echo -e "Input ${BBOLD}0 ${NC}to ${YELLOW}Exit Me${NC};";
 while :
 do
@@ -29,62 +29,87 @@ do
     1)
         echo -e "${YELLOW}STARTING ${BBOLD}HANA DB${NC}...\n";
         su - hdbadm -c "/usr/sap/hostctrl/exe/sapcontrol -nr 02 -function Start";
-while :
-do
-     count=$(/usr/sap/hostctrl/exe/sapcontrol -nr 02 -function GetProcessList | grep -o 'GREEN' |wc -l);
-     sleep 1;
-     if [ "$count" = 11 ];
-     then
-         echo -e "\n\n${BBOLD}HANA DB ${NC}SUCCESSFULLY ${BGREEN}STARTED${NC}...\n";
-     sleep 1
-         echo -e "\n\n${YELLOW}STARTING ${BBOLD}S/4 APP${NC}...\n";
-         su - s4hadm -c "/usr/sap/hostctrl/exe/sapcontrol -nr 00 -function StartSystem";
-while :
-do
-      count=$(/usr/sap/hostctrl/exe/sapcontrol -nr 00 -function GetProcessList | grep -o 'GREEN' |wc -l);
-      sleep 1;
-      if [ "$count" = 4 ];
-      then
-          echo -e "\n\n${BBOLD}S/4 APP ${NC}SUCCESSFULLY ${BGREEN}STARTED${NC}...\n";
-      break;
-      fi
-      done
-      break;
-      fi
-done
-   ;;
+        while :
+        do
+            count=$(/usr/sap/hostctrl/exe/sapcontrol -nr 02 -function GetProcessList | grep -o 'GREEN' |wc -l);
+            sleep 1;
+            if [ "$count" = 11 ];
+            then
+                echo -e "\n\n${BBOLD}HANA DB ${NC}SUCCESSFULLY ${BGREEN}STARTED${NC}...\n";
+                sleep 1
+                echo -e "\n\n${YELLOW}STARTING ${BBOLD}S/4 APP${NC}...\n";
+                su - s4hadm -c "/usr/sap/hostctrl/exe/sapcontrol -nr 00 -function StartSystem";
+                while :
+                do
+                    count=$(/usr/sap/hostctrl/exe/sapcontrol -nr 00 -function GetProcessList | grep -o 'GREEN' |wc -l);
+                    sleep 1;
+                    if [ "$count" = 4 ];
+                    then
+                        echo -e "\n\n${BBOLD}S/4 APP ${NC}SUCCESSFULLY ${BGREEN}STARTED${NC}...\n";
+                        sleep 1
+                        echo -e "\n\n${YELLOW}STARTING ${BBOLD}AS JAVA${NC}...\n";
+                        su - s4jadm -c "/usr/sap/hostctrl/exe/sapcontrol -nr 03 -function StartSystem";
+                        while :
+                        do
+                            count=$(/usr/sap/hostctrl/exe/sapcontrol -nr 03 -function GetProcessList | grep -o 'GREEN' |wc -l);
+                            sleep 1;
+                            if [ "$count" = 2 ];
+                            then
+                                echo -e "\n\n${BBOLD}AS JAVA ${NC}SUCCESSFULLY ${BGREEN}STARTED${NC}...\n";
+                                break;
+                            fi
+                        done
+                        break;
+                    fi
+                done
+                break;
+            fi
+        done
+    ;;
     2)
-		echo -e "${YELLOW}STOPPING ${BBOLD}S/4 APP${NC}...\n";
+        echo -e "${YELLOW}STOPPING ${BBOLD}S/4 APP${NC}...\n";
         su - s4hadm -c "/usr/sap/hostctrl/exe/sapcontrol -nr 00 -function StopSystem";
-while :
-do
-     count=$(/usr/sap/hostctrl/exe/sapcontrol -nr 00 -function GetProcessList | grep -o 'GRAY' |wc -l);
-     sleep 1;
-     if [ "$count" = 3 ];
-     then
-		  
-		  echo -e "\n\n${BBOLD}S/4 APP ${NC}SUCCESSFULLY ${BRED}STOPPED${NC}...\n";
-     sleep 1
-		 echo -e "\n\n${YELLOW}STOPPING ${BBOLD}HANA DB${NC}...\n";
-		 su - hdbadm -c "/usr/sap/hostctrl/exe/sapcontrol -nr 02 -function Stop";
-while :
-do
-	  count=$(/usr/sap/hostctrl/exe/sapcontrol -nr 02 -function GetProcessList | grep -o 'GRAY' |wc -l);
-      sleep 1;
-      if [ "$count" = 1 ];
-      then
-          echo -e "\n\n${BBOLD}HANA DB ${NC}SUCCESSFULLY ${BRED}STOPPED${NC}...\n";
-      break;
-      fi
-      done
-      break;
-      fi
-done
-   ;;
+        while :
+        do
+            count=$(/usr/sap/hostctrl/exe/sapcontrol -nr 00 -function GetProcessList | grep -o 'GRAY' |wc -l);
+            sleep 1;
+            if [ "$count" = 3 ];
+            then
+                echo -e "\n\n${BBOLD}S/4 APP ${NC}SUCCESSFULLY ${BRED}STOPPED${NC}...\n";
+                sleep 1
+                echo -e "\n\n${YELLOW}STOPPING ${BBOLD}AS JAVA${NC}...\n";
+                su - s4jadm -c "/usr/sap/hostctrl/exe/sapcontrol -nr 03 -function StopSystem";
+                while :
+                do
+                    count=$(/usr/sap/hostctrl/exe/sapcontrol -nr 03 -function GetProcessList | grep -o 'GRAY' |wc -l);
+                    sleep 1;
+                    if [ "$count" = 2 ];
+                    then
+                        echo -e "\n\n${BBOLD}AS JAVA ${NC}SUCCESSFULLY ${BRED}STOPPED${NC}...\n";
+                        sleep 1
+                        echo -e "\n\n${YELLOW}STOPPING ${BBOLD}HANA DB${NC}...\n";
+                        su - hdbadm -c "/usr/sap/hostctrl/exe/sapcontrol -nr 02 -function Stop";
+                        while :
+                        do
+                            count=$(/usr/sap/hostctrl/exe/sapcontrol -nr 02 -function GetProcessList | grep -o 'GRAY' |wc -l);
+                            sleep 1;
+                            if [ "$count" = 1 ];
+                            then
+                                echo -e "\n\n${BBOLD}HANA DB ${NC}SUCCESSFULLY ${BRED}STOPPED${NC}...\n";
+                                break;
+                            fi
+                        done
+                        break;
+                    fi
+                done
+                break;
+            fi
+        done
+    ;;
     0)
        echo -e "\n${BBOLD}Bye!${NC}"
        break
-   ;;
+    ;;
     *)
        echo -e "\n${RED}Error Input!${NC}"
     ;;
