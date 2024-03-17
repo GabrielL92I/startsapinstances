@@ -1,6 +1,6 @@
 # startsapinstances
 
-SARTSAPALL.sh is a script with ready commands to start and stop SAP S/4 HANA instances easily and outputing the information colorfully.
+STARTSAPALL.sh is a script with ready commands to start and stop SAP S/4 HANA instances easily and outputing the information colorfully.
 
 - This script use $count, to count processes in start mode "Green" or in stop mode "Grey" and based on the number output 
   detects if the instance has successfully started or stopped. In this way we make sure that HANA has started successfully and 
