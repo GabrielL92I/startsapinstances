@@ -61,7 +61,7 @@ do
 		  
 		  echo -e "\n\n${BBOLD}S/4 APP ${NC}SUCCESSFULLY ${BRED}STOPPED${NC}...\n";
      sleep 1
-		 echo -e "\n\nSTOPPING HANA DB ...\n";
+		 echo -e "\n\n${YELLOW}STOPPING HANA DB ...\n";
 		 su - hdbadm -c "/usr/sap/hostctrl/exe/sapcontrol -nr 02 -function Stop";
 while :
 do
