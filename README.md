@@ -15,7 +15,7 @@ What you can add more to this script?!
 
 To run the script:
 
-- S4 SID=S4H, HANA DB SID=HDB. Change to your SID instances accordingly.
+- S4 SID=S4H, AS JAVA SID=S4J, HANA DB SID=HDB. Change to your SID instances accordingly.
 - Give chmod 775 permissions to the file.
 
 Credits:
