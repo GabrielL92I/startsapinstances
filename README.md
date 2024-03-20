@@ -11,7 +11,7 @@ Features:
 - Optional CIN(Central Instance Number).
 - Optional Start/Stop Instance based on CIN
 - Start/Stop/Show Status of SAP Instances
-- 
+  
 To run the script:
 
 - chmod 775 /path to the script
