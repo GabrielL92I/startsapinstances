@@ -77,7 +77,7 @@ stop_hana_db() {
     # Wait until HANA DB processes are stopped
     while true; do
         count=$(/usr/sap/hostctrl/exe/sapcontrol -nr $hdb_cin -function GetProcessList | grep -o 'GRAY' | wc -l)
-        if [ "$count" -eq 1 ]; then
+        if [ "$count" -eq 0 ] || [ "$count" -eq 1 ]; then
             echo -e "\n${BBOLD}HANA DB ${NC}SUCCESSFULLY ${RED}STOPPED${NC}..."
             break
         fi
@@ -124,7 +124,7 @@ check_sap_status() {
     local count_grey_hdb=$(/usr/sap/hostctrl/exe/sapcontrol -nr $hdb_nr -function GetProcessList | grep -o 'GRAY' | wc -l)
     if [ "$count_green_hdb" -eq 11 ]; then
         echo -e "\n${BBOLD}HANA DB ${NC}status: ${BGREEN}STARTED${NC}"
-    elif [ "$count_grey_hdb" -eq 1 ]; then
+    elif [ "$count_grey_hdb" -eq 0 ] || [ "$count" -eq 1 ]; then
         echo -e "\n${BBOLD}HANA DB ${NC}status: ${RED}STOPPED${NC}"
     else
         echo -e "\n${BBOLD}HANA DB ${NC}status: ${YELLOW}UNKNOWN${NC}"
