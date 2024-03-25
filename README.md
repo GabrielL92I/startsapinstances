@@ -14,7 +14,8 @@ Features:
   
 To run the script:
 
-- chmod 775 /path to the script
+- You need to be root
+- chmod 755 /path to the script
 - sed -i -e 's/\r$//' /path to the script
 - Run it: ./path to the script
 
