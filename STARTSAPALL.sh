@@ -12,6 +12,7 @@ BBOLD='\033[1;30m' # Bold Black
 UBLACK='\033[4;30m' # Underline Black
 BRED='\033[1;31m' # Bold Red
 BGREEN='\033[1;32m' #Bold Green
+PURPLE='\033[0;35m' #Purple
 
 # Define colors for read
 RED=$'\033[0;31m' # Red
@@ -167,6 +168,7 @@ show_menu() {
     echo -e "\n${BBOLD}1.${NC} ${BGREEN}Start SAP Instances${NC}"
     echo -e "${BBOLD}2.${NC} ${RED}Stop SAP Instances${NC}"
     echo -e "${BBOLD}3.${NC} ${BLUE}SAP Instance Status${NC}"
+	echo -e "${BBOLD}4.${NC} ${PURPLE}Show SAP Instances License${NC}"
     echo -e "${BBOLD}0.${NC} ${YELLOW}Exit${NC}\n"
 }
 main() {  
@@ -228,6 +230,24 @@ main() {
 				fi
                 check_sap_status "$hdb_nr" "$s4_app_nr" "$as_java_nr"
                 ;;   
+			4)
+			    local line=$(ls /home | grep adm | cut -c-3)
+			    for str in ${line[@]}; do
+                echo -e "\nSID: ${BBOLD}"$str${NC}
+				local license=$(su - $str"adm" -c "saplicense -get pf=/usr/ | grep '=' | awk '{print $5}'")
+				echo -e "HARDWARE KEY: ${BBOLD}"${license: -12}${NC}
+                done
+                local hdb=$(cat /etc/passwd | grep HANA | cut -c-3)
+				echo -e "\n"
+				local hananr=$(ls /usr/sap/HDB/ | grep HDB | sed 's/.*\(..\)/\1/') 
+				echo -e "${RED}Info: HANA DB should be up and running to be able to read the license key!${NC}"
+				read -p "Please input HANA DB user: " usr
+				read -s -p "Please input HANA DB password: " pwd
+				echo -e "\n\nSID: ${BBOLD}"$hdb${NC}
+                local hdblic=$(su - $hdb"adm" -c "hdbsql -i $hananr -u $usr -p $pwd -se SELECT HARDWARE_KEY FROM M_LICENSE")
+				local format=`echo "$hdblic" | cut -d'"' -f 2 | awk 'NR==2'` 
+				echo -e "HARDWARE KEY: ${BBOLD}$format${NC}"
+			   ;;
             0)
                 echo -e "${BBOLD}Bye!${NC}"
                 exit 0
@@ -243,6 +263,7 @@ main() {
     echo -e "\n${BBOLD}1.${NC} ${BGREEN}Start SAP Instances${NC}"
     echo -e "${BBOLD}2.${NC} ${RED}Stop SAP Instances${NC}"
     echo -e "${BBOLD}3.${NC} ${BLUE}SAP Instance Status${NC}"
+	echo -e "${BBOLD}4.${NC} ${PURPLE}Show SAP Instances License${NC}"
     echo -e "${BBOLD}0.${NC} ${YELLOW}Exit${NC}\n"
 # Call the main function to start the script
 main
