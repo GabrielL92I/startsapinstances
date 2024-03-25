@@ -11,6 +11,7 @@ Features:
 - Optional CIN(Central Instance Number).
 - Optional Start/Stop Instance based on CIN
 - Start/Stop/Show Status of SAP Instances
+- Show HW KEY of SAP Instances
   
 To run the script:
 
