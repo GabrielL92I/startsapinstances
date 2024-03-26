@@ -168,7 +168,7 @@ show_menu() {
     echo -e "\n${BBOLD}1.${NC} ${BGREEN}Start SAP Instances${NC}"
     echo -e "${BBOLD}2.${NC} ${RED}Stop SAP Instances${NC}"
     echo -e "${BBOLD}3.${NC} ${BLUE}SAP Instance Status${NC}"
-	echo -e "${BBOLD}4.${NC} ${PURPLE}Show SAP Instances License${NC}"
+	echo -e "${BBOLD}4.${NC} ${PURPLE}Show SAP Instances HW KEY${NC}"
     echo -e "${BBOLD}0.${NC} ${YELLOW}Exit${NC}\n"
 }
 main() {  
@@ -263,7 +263,7 @@ main() {
     echo -e "\n${BBOLD}1.${NC} ${BGREEN}Start SAP Instances${NC}"
     echo -e "${BBOLD}2.${NC} ${RED}Stop SAP Instances${NC}"
     echo -e "${BBOLD}3.${NC} ${BLUE}SAP Instance Status${NC}"
-	echo -e "${BBOLD}4.${NC} ${PURPLE}Show SAP Instances License${NC}"
+	echo -e "${BBOLD}4.${NC} ${PURPLE}Show SAP Instances HW KEY${NC}"
     echo -e "${BBOLD}0.${NC} ${YELLOW}Exit${NC}\n"
 # Call the main function to start the script
 main
